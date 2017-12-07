@@ -19,21 +19,17 @@ setup(
     author_email='doomsplayer@gmail.com',
     license='MIT',
     classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
-
-        # Indicate who your project is intended for
+        'Development Status :: 2 - Pre-Alpha'
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
+        'Topic :: Multimedia :: Graphics :: Editors',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
     ],
-    keywords='patch, image',
+    keywords=['patch', 'image', 'split'],
     py_modules=["patchify"],
-    install_requires=["numpy", "scikit-image"],
+    install_requires=["itertools", "numpy", "scikit-image"],
     extras_require={},
     package_data={},
     data_files=[],
