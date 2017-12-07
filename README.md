@@ -2,7 +2,7 @@
 
 A library that helps you split image into small, overlappable patches, and merge patches into original image.
 
-This library provides two functions: patchify, unpatchify.
+This library provides two functions: `patchify`, `unpatchify`.
 
 Usage:
 
