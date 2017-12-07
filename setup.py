@@ -11,7 +11,7 @@ here = path.abspath(path.dirname(__file__))
 
 setup(
     name='patchify',
-    version='0.0.1',
+    version='0.1.0',
     description='A library that helps you split image into small, overlappable patches, and merge patches into original image.',
     long_description="""
     A library that helps you split image into small, overlappable patches, and merge patches into original image.
@@ -25,7 +25,7 @@ setup(
     author_email='doomsplayer@gmail.com',
     license='MIT',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Multimedia :: Graphics :: Editors',
         'License :: OSI Approved :: MIT License',
