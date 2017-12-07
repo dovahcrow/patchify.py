@@ -19,7 +19,7 @@ setup(
     author_email='doomsplayer@gmail.com',
     license='MIT',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha'
+        'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'Topic :: Multimedia :: Graphics :: Editors',
         'License :: OSI Approved :: MIT License',
