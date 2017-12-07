@@ -12,8 +12,14 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name='patchify',
     version='0.0.1',
-    description='',
-    long_description="An attempt on model interpretation",
+    description='A library that helps you split image into small, overlappable patches, and merge patches into original image.',
+    long_description="""
+    A library that helps you split image into small, overlappable patches, and merge patches into original image.
+    This library provides two functions: patchify, unpatchify.
+
+    * Patchify to split image into small patches.
+    * Unpatchify to merge patches into original images.
+    """,
     url='https://github.com/doomsplayer/patchify.py',
     author='Weiyüen Wu',
     author_email='doomsplayer@gmail.com',
