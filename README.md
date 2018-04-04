@@ -21,7 +21,7 @@ Example:
 ```python
 reconstructed_image = unpatchify(patches, image.shape)
 ```
-This will reconstruct the original image that was patchified in previous code. 
+This will reconstruct the original image that was patchified in previous code.
 
 A full example:
 ```python
@@ -33,7 +33,7 @@ image = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
 patches = patchify(image, (2,2), step=1) # split image into 2*3 small 2*2 patches.
 
 assert patches.shape == (2, 3, 2, 2)
-
+reconstructed_image = unpatchify(patches, image.shape)
 
 assert (reconstructed_image == image).all()
 ```
