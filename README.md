@@ -1,11 +1,11 @@
-# patchify.py
+# patchify
 
-
-patchfy.py can split images into small overlappable patches by given patch cell size, and merge patches into original image.
+patchfy can split images into small overlappable patches by given patch cell size, and merge patches into original image.
 
 This library provides two functions: `patchify`, `unpatchify`.
 
 Usage:
+
 #### `patchify(image_to_patch, patch_shape, step=1)`
 
 Example: <br>

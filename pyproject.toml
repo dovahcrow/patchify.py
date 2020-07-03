@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "patchify"
+version = "0.2"
+description = "A library that helps you split image into small, overlappable patches, and merge patches back into the original image."
+authors = ["Weiyuan Wu <doomsplayer@gmail.com>", "Zhifan Lan <zlan1@ualberta.ca>"]
+license = "MIT"
+readme = "README.md"
+
+repository = "https://github.com/dovahcrow/patchify.py"
+homepage = "https://github.com/dovahcrow/patchify.py"
+
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Graphics :: Editors",
+]
+
+keywords=["patch", "image", "split"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+scikit-image = "^0.17.2"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+pytest = "^5.4.3"
+pylint = "^2.5.3"
+mypy = "^0.782"
+
+[tool.black]
+line-length = 88
+target-version = ["py36", "py37", "py38"]
+exclude = '''
+(
+    /(
+        \.eggs
+    | \.git
+    | \.pytype
+    | \.pytest_cache
+    | build
+    | dist
+    )/
+)
+'''
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
