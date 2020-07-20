@@ -75,7 +75,6 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
 
     i_h, i_w = imsize
     image = np.zeros(imsize, dtype=patches.dtype)
-    divisor = np.zeros(imsize, dtype=patches.dtype)
 
     n_h, n_w, p_h, p_w = patches.shape
 
@@ -88,18 +87,22 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
     assert int(o_w) == o_w
     assert int(o_h) == o_h
 
-    o_w = int(o_w)
+    o_w = int(o_w)  # overlap
     o_h = int(o_h)
 
-    s_w = p_w - o_w
+    s_w = p_w - o_w  # step
     s_h = p_h - o_h
 
     for i, j in product(range(n_h), range(n_w)):
-        patch = patches[i, j]
-        image[(i * s_h) : (i * s_h) + p_h, (j * s_w) : (j * s_w) + p_w] += patch
-        divisor[(i * s_h) : (i * s_h) + p_h, (j * s_w) : (j * s_w) + p_w] += 1
 
-    return image / divisor
+        i_o, j_o = i * s_h, j * s_w
+
+        if i == n_h - 1 or j == n_w - 1:
+            image[i_o : i_o + p_h, j_o : j_o + p_w] = patches[i, j]
+        else:
+            image[i_o : i_o + s_h, j_o : j_o + s_w] = patches[i, j, :s_h, :s_w]
+
+    return image
 
 
 def _unpatchify3d(  # pylint: disable=too-many-locals
@@ -110,7 +113,6 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
 
     i_h, i_w, i_c = imsize
     image = np.zeros(imsize, dtype=patches.dtype)
-    divisor = np.zeros(imsize, dtype=patches.dtype)
 
     n_h, n_w, n_c, p_h, p_w, p_c = patches.shape
 
@@ -134,16 +136,14 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
     s_c = p_c - o_c
 
     for i, j, k in product(range(n_h), range(n_w), range(n_c)):
-        patch = patches[i, j, k]
-        image[
-            (i * s_h) : (i * s_h) + p_h,
-            (j * s_w) : (j * s_w) + p_w,
-            (k * s_c) : (k * s_c) + p_c,
-        ] += patch
-        divisor[
-            (i * s_h) : (i * s_h) + p_h,
-            (j * s_w) : (j * s_w) + p_w,
-            (k * s_c) : (k * s_c) + p_c,
-        ] += 1
 
-    return image / divisor
+        i_o, j_o, k_o = i * s_h, j * s_w, k * s_c
+
+        if i == n_h - 1 or j == n_w - 1 or k == n_c - 1:
+            image[i_o : i_o + p_h, j_o : j_o + p_w, k_o : k_o + p_c] = patches[i, j, k]
+        else:
+            image[i_o : i_o + s_h, j_o : j_o + s_w, k_o : k_o + s_c] = patches[
+                i, j, k, :s_h, :s_w, :s_c
+            ]
+
+    return image

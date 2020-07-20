@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "patchify"
-version = "0.2"
+version = "0.2.1"
 description = "A library that helps you split image into small, overlappable patches, and merge patches back into the original image."
 authors = ["Weiyuan Wu <doomsplayer@gmail.com>", "Zhifan Lan <zlan1@ualberta.ca>"]
 license = "MIT"
@@ -26,6 +26,8 @@ black = "^19.10b0"
 pytest = "^5.4.3"
 pylint = "^2.5.3"
 mypy = "^0.782"
+jupyterlab = "^2.2.0"
+scikit-image = "^0.17.2"
 
 [tool.black]
 line-length = 88
