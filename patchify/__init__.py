@@ -79,8 +79,8 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
     n_h, n_w, p_h, p_w = patches.shape
 
     # Calculat the overlap size in each axis
-    o_w = (n_w * p_w - i_w) / (n_w - 1)
-    o_h = (n_h * p_h - i_h) / (n_h - 1)
+    o_w = 0 if n_w == 1 else (n_w * p_w - i_w) / (n_w - 1)
+    o_h = 0 if n_h == 1 else (n_h * p_h - i_h) / (n_h - 1)
 
     # The overlap should be integer, otherwise the patches are unable
     # to reconstruct into a image with given shape
@@ -93,14 +93,24 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
     s_w = p_w - o_w  # step
     s_h = p_h - o_h
 
-    for i, j in product(range(n_h), range(n_w)):
+    i, j = 0, 0
 
+    while True:
         i_o, j_o = i * s_h, j * s_w
 
-        if i == n_h - 1 or j == n_w - 1:
-            image[i_o : i_o + p_h, j_o : j_o + p_w] = patches[i, j]
+        image[i_o : i_o + p_h, j_o : j_o + p_w] = patches[i, j]
+
+        if j < n_w - 1:
+            j = min((j_o + p_w) // s_w, n_w - 1)
+        elif i < n_h - 1 and j >= n_w - 1:
+            # Go to next row
+            i = min((i_o + p_h) // s_h, n_h - 1)
+            j = 0
+        elif i >= n_h - 1 and j >= n_w - 1:
+            # Finished
+            break
         else:
-            image[i_o : i_o + s_h, j_o : j_o + s_w] = patches[i, j, :s_h, :s_w]
+            raise RuntimeError("Unreachable")
 
     return image
 
@@ -117,9 +127,9 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
     n_h, n_w, n_c, p_h, p_w, p_c = patches.shape
 
     # Calculat the overlap size in each axis
-    o_w = (n_w * p_w - i_w) / (n_w - 1)
-    o_h = (n_h * p_h - i_h) / (n_h - 1)
-    o_c = 1 if n_c == 1 else (n_c * p_c - i_c) / (n_c - 1)
+    o_w = 0 if n_w == 1 else (n_w * p_w - i_w) / (n_w - 1)
+    o_h = 0 if n_h == 1 else (n_h * p_h - i_h) / (n_h - 1)
+    o_c = 0 if n_c == 1 else (n_c * p_c - i_c) / (n_c - 1)
 
     # The overlap should be integer, otherwise the patches are unable
     # to reconstruct into a image with given shape
@@ -135,15 +145,27 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
     s_h = p_h - o_h
     s_c = p_c - o_c
 
-    for i, j, k in product(range(n_h), range(n_w), range(n_c)):
+    i, j, k = 0, 0, 0
+
+    while True:
 
         i_o, j_o, k_o = i * s_h, j * s_w, k * s_c
 
-        if i == n_h - 1 or j == n_w - 1 or k == n_c - 1:
-            image[i_o : i_o + p_h, j_o : j_o + p_w, k_o : k_o + p_c] = patches[i, j, k]
+        image[i_o : i_o + p_h, j_o : j_o + p_w, k_o : k_o + p_c] = patches[i, j, k]
+
+        if k < n_c - 1:
+            k = min((k_o + p_c) // s_c, n_c - 1)
+        elif j < n_w - 1 and k >= n_c - 1:
+            j = min((j_o + p_w) // s_w, n_w - 1)
+            k = 0
+        elif i < n_h - 1 and j >= n_w - 1 and k >= n_c - 1:
+            i = min((i_o + p_h) // s_h, n_h - 1)
+            j = 0
+            k = 0
+        elif i >= n_h - 1 and j >= n_w - 1 and k >= n_c - 1:
+            # Finished
+            break
         else:
-            image[i_o : i_o + s_h, j_o : j_o + s_w, k_o : k_o + s_c] = patches[
-                i, j, k, :s_h, :s_w, :s_c
-            ]
+            raise RuntimeError("Unreachable")
 
     return image

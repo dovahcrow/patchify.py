@@ -4,11 +4,26 @@ from .. import patchify, unpatchify
 
 def test_2d() -> None:
 
+    # 3 x 4 image
     image = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
 
     patches = patchify(image, (2, 2), step=1)  # split image into 2*3 small 2*2 patches.
 
     assert patches.shape == (2, 3, 2, 2)
+    reconstructed_image = unpatchify(patches, image.shape)
+
+    assert (reconstructed_image == image).all()
+
+    patches = patchify(image, (3, 2), step=1)  # split image into 1*3 small 3*2 patches.
+
+    assert patches.shape == (1, 3, 3, 2)
+    reconstructed_image = unpatchify(patches, image.shape)
+
+    assert (reconstructed_image == image).all()
+
+    patches = patchify(image, (2, 4), step=1)  # split image into 2*1 small 2*4 patches.
+
+    assert patches.shape == (2, 1, 2, 4)
     reconstructed_image = unpatchify(patches, image.shape)
 
     assert (reconstructed_image == image).all()
