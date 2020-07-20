@@ -4,34 +4,37 @@ patchfy can split images into small overlappable patches by given patch cell siz
 
 This library provides two functions: `patchify`, `unpatchify`.
 
-Usage:
+## Usage
 
-#### `patchify(image_to_patch, patch_shape, step=1)`
+### Split image to patches
 
-Example: <br>
-2D images:
+`patchify(image_to_patch, patch_shape, step=1)`
+
+2D image:
 ```python
 #This will split the image into small images of shape [3,3]
 patches = patchify(image, (3, 3), step=1)
 ```
-3D images:
+
+3D image:
 ```python
 #This will split the image into small images of shape [3,3,3]
 patches = patchify(image, (3, 3, 3), step=1)
 ```
 
-Patches can merged using:
-#### `unpatchify(patches_to_merge, merged_image_size)`
+### Merge patches into original image
 
-Example:
+`unpatchify(patches_to_merge, merged_image_size)`
+
 ```python
 reconstructed_image = unpatchify(patches, image.shape)
 ```
 This will reconstruct the original image that was patchified in previous code.
 
-A full example:
+### Full running example
 
-##### 2D images
+#### 2D image patchify and merge
+
 ```python
 import numpy as np
 from patchify import patchify, unpatchify
@@ -46,7 +49,8 @@ reconstructed_image = unpatchify(patches, image.shape)
 assert (reconstructed_image == image).all()
 ```
 
-##### 3D images
+#### 3D image patchify and merge
+
 ```python
 import numpy as np
 from patchify import patchify, unpatchify
