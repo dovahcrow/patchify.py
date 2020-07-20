@@ -31,7 +31,7 @@ reconstructed_image = unpatchify(patches, image.shape)
 ```
 This will reconstruct the original image that was patchified in previous code.
 
-### Full running example
+### Full running examples
 
 #### 2D image patchify and merge
 
