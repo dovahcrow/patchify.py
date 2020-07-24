@@ -78,20 +78,20 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
 
     n_h, n_w, p_h, p_w = patches.shape
 
-    # Calculat the overlap size in each axis
-    o_w = 0 if n_w == 1 else (n_w * p_w - i_w) / (n_w - 1)
-    o_h = 0 if n_h == 1 else (n_h * p_h - i_h) / (n_h - 1)
+    s_w = 0 if n_w <= 1 else (i_w - p_w) / (n_w - 1)
+    s_h = 0 if n_h <= 1 else (i_h - p_h) / (n_h - 1)
 
-    # The overlap should be integer, otherwise the patches are unable
-    # to reconstruct into a image with given shape
-    assert int(o_w) == o_w
-    assert int(o_h) == o_h
+    # The step size should be same for all patches, otherwise the patches are unable
+    # to reconstruct into a image
+    assert (
+        int(s_w) == s_w
+    ), "Unpatchify only supports recover image with uniform step size for all patches"
+    assert (
+        int(s_h) == s_h
+    ), "Unpatchify only supports recover image with uniform step size for all patches"
 
-    o_w = int(o_w)  # overlap
-    o_h = int(o_h)
-
-    s_w = p_w - o_w  # step
-    s_h = p_h - o_h
+    s_w = int(s_w)
+    s_h = int(s_h)
 
     i, j = 0, 0
 
@@ -126,24 +126,25 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
 
     n_h, n_w, n_c, p_h, p_w, p_c = patches.shape
 
-    # Calculat the overlap size in each axis
-    o_w = 0 if n_w == 1 else (n_w * p_w - i_w) / (n_w - 1)
-    o_h = 0 if n_h == 1 else (n_h * p_h - i_h) / (n_h - 1)
-    o_c = 0 if n_c == 1 else (n_c * p_c - i_c) / (n_c - 1)
+    s_w = 0 if n_w <= 1 else (i_w - p_w) / (n_w - 1)
+    s_h = 0 if n_h <= 1 else (i_h - p_h) / (n_h - 1)
+    s_c = 0 if n_c <= 1 else (i_c - p_c) / (n_c - 1)
 
-    # The overlap should be integer, otherwise the patches are unable
-    # to reconstruct into a image with given shape
-    assert int(o_w) == o_w
-    assert int(o_h) == o_h
-    assert int(o_c) == o_c
+    # The step size should be same for all patches, otherwise the patches are unable
+    # to reconstruct into a image
+    assert (
+        int(s_w) == s_w
+    ), "Unpatchify only supports recover image with uniform step size for all patches"
+    assert (
+        int(s_h) == s_h
+    ), "Unpatchify only supports recover image with uniform step size for all patches"
+    assert (
+        int(s_c) == s_c
+    ), "Unpatchify only supports recover image with uniform step size for all patches"
 
-    o_w = int(o_w)
-    o_h = int(o_h)
-    o_c = int(o_c)
-
-    s_w = p_w - o_w
-    s_h = p_h - o_h
-    s_c = p_c - o_c
+    s_w = int(s_w)
+    s_h = int(s_h)
+    s_c = int(s_c)
 
     i, j, k = 0, 0, 0
 

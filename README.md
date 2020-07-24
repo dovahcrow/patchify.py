@@ -4,6 +4,11 @@ patchfy can split images into small overlappable patches by given patch cell siz
 
 This library provides two functions: `patchify`, `unpatchify`.
 
+## Installation
+```
+pip install patchify
+```
+
 ## Usage
 
 ### Split image to patches
