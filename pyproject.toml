@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "patchify"
-version = "0.2.1"
+version = "0.2.2"
 description = "A library that helps you split image into small, overlappable patches, and merge patches back into the original image."
 authors = ["Weiyuan Wu <doomsplayer@gmail.com>", "Zhifan Lan <zlan1@ualberta.ca>"]
 license = "MIT"
