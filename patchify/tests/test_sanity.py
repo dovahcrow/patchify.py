@@ -1,4 +1,6 @@
 import numpy as np
+import pytest
+
 from .. import patchify, unpatchify
 
 
@@ -40,4 +42,15 @@ def test_3d() -> None:
     reconstructed_image = unpatchify(patches, image.shape)
     print(reconstructed_image.shape)  # (512, 512, 3)
 
+    assert (reconstructed_image == image).all()
+
+
+@pytest.mark.xfail
+def test_fail() -> None:
+
+    image = np.random.rand(900, 1600, 3)
+
+    patches = patchify(image, (256, 256, 3), step=128)
+    assert patches.shape == (6, 11, 1, 256, 256, 3)
+    reconstructed_image = unpatchify(patches, image.shape)
     assert (reconstructed_image == image).all()

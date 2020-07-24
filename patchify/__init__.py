@@ -83,13 +83,10 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
 
     # The step size should be same for all patches, otherwise the patches are unable
     # to reconstruct into a image
-    assert (
-        int(s_w) == s_w
-    ), "Unpatchify only supports recover image with uniform step size for all patches"
-    assert (
-        int(s_h) == s_h
-    ), "Unpatchify only supports recover image with uniform step size for all patches"
-
+    if int(s_w) != s_w:
+        raise NonUniformStepSizeError(i_w, n_w, p_w, s_w)
+    if int(s_h) != s_h:
+        raise NonUniformStepSizeError(i_h, n_h, p_h, s_h)
     s_w = int(s_w)
     s_h = int(s_h)
 
@@ -132,15 +129,12 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
 
     # The step size should be same for all patches, otherwise the patches are unable
     # to reconstruct into a image
-    assert (
-        int(s_w) == s_w
-    ), "Unpatchify only supports recover image with uniform step size for all patches"
-    assert (
-        int(s_h) == s_h
-    ), "Unpatchify only supports recover image with uniform step size for all patches"
-    assert (
-        int(s_c) == s_c
-    ), "Unpatchify only supports recover image with uniform step size for all patches"
+    if int(s_w) != s_w:
+        raise NonUniformStepSizeError(i_w, n_w, p_w, s_w)
+    if int(s_h) != s_h:
+        raise NonUniformStepSizeError(i_h, n_h, p_h, s_h)
+    if int(s_c) != s_c:
+        raise NonUniformStepSizeError(i_c, n_c, p_c, s_c)
 
     s_w = int(s_w)
     s_h = int(s_h)
@@ -170,3 +164,21 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
             raise RuntimeError("Unreachable")
 
     return image
+
+
+class NonUniformStepSizeError(RuntimeError):
+    def __init__(
+        self, imsize: int, n_patches: int, patch_size: int, step_size: float
+    ) -> None:
+        super().__init__(imsize, n_patches, patch_size, step_size)
+        self.n_patches = n_patches
+        self.patch_size = patch_size
+        self.imsize = imsize
+        self.step_size = step_size
+
+    def __repr__(self) -> str:
+        return f"Unpatchify only supports reconstructing image with a uniform step size for all patches. \
+However, reconstructing {self.n_patches} x {self.patch_size}px patches to an {self.imsize} image requires {self.step_size} as step size, which is not an integer."
+
+    def __str__(self) -> str:
+        return self.__repr__()
