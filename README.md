@@ -36,9 +36,13 @@ reconstructed_image = unpatchify(patches, image.shape)
 ```
 This will reconstruct the original image that was patchified in previous code.
 
-**Caveat**: in order for `unpatchify` to work, you need to create patchies with equal step size. e.g. if the original image has width 3 and the patch has width 2, you cannot really create equal step size patches with step size 2. (first patch [elem0, elem1] and second patch [elem2, elem3], which is out of bound).
+### Help! `unpatchify` yields distorted images
+In order for `unpatchify` to work, patchies should be created with equal step size. 
+e.g. if the original image has width 3 and the patch has width 2, you cannot really create equal step size patches with step size 2. 
+(first patch [elem0, elem1] and second patch [elem2, elem3], in which elem3 is out of bound).
 
-The required condition for unpatchify to success is to have (width - patch_width) mod step_size = 0.
+The required condition to successfully recover the image using unpatchify
+is to have `(width - patch_width) mod step_size = 0` when calling `patchify`.
 
 ### Full running examples
 
