@@ -2,11 +2,10 @@
 Patchify.py
 """
 
-from itertools import product
 from typing import Tuple, Union, cast
 
 import numpy as np
-from skimage.util import view_as_windows
+from .view_as_windows import view_as_windows
 
 
 Imsize = Union[Tuple[int, int], Tuple[int, int, int]]
