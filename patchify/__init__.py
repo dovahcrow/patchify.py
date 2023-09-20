@@ -94,13 +94,17 @@ def _unpatchify2d(  # pylint: disable=too-many-locals
     while True:
         i_o, j_o = i * s_h, j * s_w
 
-        image[i_o : i_o + p_h, j_o : j_o + p_w] = patches[i, j]
+        # This is about the redundancy
+        i_r = 0 if i==0 else (p_h-s_h)//2
+        j_r = 0 if j==0 else (p_w-s_w)//2
+
+        image[i_o+i_r : i_o+p_h, j_o+j_r : j_o+p_w] = patches[i, j, i_r:, j_r:]
 
         if j < n_w - 1:
-            j = min((j_o + p_w) // s_w, n_w - 1)
+            j = min(j + 1, n_w - 1)
         elif i < n_h - 1 and j >= n_w - 1:
             # Go to next row
-            i = min((i_o + p_h) // s_h, n_h - 1)
+            i = min(i + 1, n_h - 1)
             j = 0
         elif i >= n_h - 1 and j >= n_w - 1:
             # Finished
@@ -145,15 +149,20 @@ def _unpatchify3d(  # pylint: disable=too-many-locals
 
         i_o, j_o, k_o = i * s_h, j * s_w, k * s_c
 
-        image[i_o : i_o + p_h, j_o : j_o + p_w, k_o : k_o + p_c] = patches[i, j, k]
+        # This is about the redundancy
+        i_r = 0 if i==0 else (p_h-s_h)//2
+        j_r = 0 if j==0 else (p_w-s_w)//2
+        k_r = 0 if k==0 else (p_c-s_c)//2
+
+        image[i_o + i_r : i_o + p_h, j_o + j_r : j_o + p_w, k_o + k_r : k_o + p_c] = patches[i, j, k, i_r:, j_r:, k_r:]
 
         if k < n_c - 1:
-            k = min((k_o + p_c) // s_c, n_c - 1)
+            k = min(k + 1, n_c - 1)
         elif j < n_w - 1 and k >= n_c - 1:
-            j = min((j_o + p_w) // s_w, n_w - 1)
+            j = min(j + 1, n_w - 1)
             k = 0
         elif i < n_h - 1 and j >= n_w - 1 and k >= n_c - 1:
-            i = min((i_o + p_h) // s_h, n_h - 1)
+            i = min(i + 1, n_h - 1)
             j = 0
             k = 0
         elif i >= n_h - 1 and j >= n_w - 1 and k >= n_c - 1:
